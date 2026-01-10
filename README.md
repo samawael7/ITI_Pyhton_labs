@@ -1,1 +1,1 @@
-# ITI_Pyhton_labs
+# ITI_Python_labs
