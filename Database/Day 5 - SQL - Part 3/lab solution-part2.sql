@@ -1,0 +1,48 @@
+CREATE DATABASE ITI_PROGRAM
+
+Create Table Instructor(
+ID INT IDENTITY(1,1) PRIMARY KEY,
+Fname VARCHAR(20),
+Lname VARCHAR(20),
+BirthDate DATE,
+HireDate DATE DEFAULT GETDATE(),
+[Address] VARCHAR(20)
+	CHECK ([Address] IN ('CAIRO','ALEX')),
+Salary MONEY
+	CHECK (Salary BETWEEN 1000 AND 5000)
+	DEFAULT 3000,
+OverTime INT UNIQUE,
+Age AS (YEAR(GETDATE()) - YEAR(BirthDate)),
+NetSalary AS (Salary + OverTime)
+)
+
+
+CREATE TABLE Course(
+CID INT IDENTITY PRIMARY KEY,
+CName VARCHAR(20),
+Duration INT UNIQUE
+)
+
+
+CREATE TABLE Lab(
+LID INT IDENTITY,
+CID INT,
+Location VARCHAR(30),
+Capacity INT CHECK (Capacity < 20),
+
+CONSTRAINT PK_Lab PRIMARY KEY (CID, LID),
+CONSTRAINT FK_Lab_Course FOREIGN KEY (CID) REFERENCES Course(CID)
+)
+
+
+CREATE TABLE Teach
+(
+InstructorID INT,
+CourseID INT,
+
+CONSTRAINT PK_Teach PRIMARY KEY (InstructorID, CourseID),
+CONSTRAINT FK_Teach_Instructor FOREIGN KEY (InstructorID) REFERENCES Instructor(ID),
+CONSTRAINT FK_Teach_Course FOREIGN KEY (CourseID) REFERENCES Course(CID)
+);
+
+
